@@ -1,3 +1,7 @@
+.idea/
+Reacher_Windows_x86_64/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
