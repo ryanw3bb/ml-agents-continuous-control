@@ -31,48 +31,45 @@ print('The state for the first agent looks like:', states[0])
 agent = Agent(state_size=state_size, action_size=action_size, random_seed=2)
 
 
-def ddpg(n_episodes=1000, max_t=300, print_every=100):
-    scores_deque = deque(maxlen=print_every)
-    #scores = np.zeros(num_agents)  # initialize the score (for each agent)
+def ddpg(n_episodes=500, max_t=1000, print_every=100, target_score=30):
 
-    scores = []
+    scores_deque = deque(maxlen=print_every)
+    scores_plot = []
+
     for i_episode in range(1, n_episodes + 1):
-        env_info = env.reset(train_mode=True)[brain_name]  # reset the environment
-        states = env_info.vector_observations  # get the current state (for each agent)
-        # state = env.reset()
+        env_info = env.reset(train_mode=True)[brain_name]
+        states = env_info.vector_observations
         agent.reset()
         score = np.zeros(num_agents)
-        for t in range(max_t):
-            # action = agent.act(state)
-            # next_state, reward, done, _ = env.step(action)
-            # agent.step(state, action, reward, next_state, done)
-            # state = next_state
-            # score += reward
-            actions = agent.act(states)
-            # actions = np.random.randn(num_agents, action_size) # select an action (for each agent)
-            # actions = np.clip(actions, -1, 1)  # all actions between -1 and 1
-            env_info = env.step(actions)[brain_name]  # send all actions to tne environment
-            next_states = env_info.vector_observations  # get next state (for each agent)
-            rewards = env_info.rewards  # get reward (for each agent)
-            dones = env_info.local_done  # see if episode finished
-            agent.step(states, actions, rewards, next_states, dones)
-            states = next_states  # roll over states to next time step
-            score += rewards  # update the score (for each agent)
 
-            if np.any(dones):  # exit loop if episode finished
+        for t in range(max_t):
+            actions = agent.act(states)
+            env_info = env.step(actions)[brain_name]
+            next_states = env_info.vector_observations
+            rewards = env_info.rewards
+            dones = env_info.local_done
+            agent.step(states, actions, rewards, next_states, dones, t)
+            states = next_states
+            score += rewards
+            if np.any(dones):
                 break
 
-            # if done:
-            #    break
         scores_deque.append(np.mean(score))
-        scores.append(np.mean(score))
-        print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)), end="")
+        scores_plot.append(np.mean(score))
+
+        print('\rEpisode {}\tMean: {:.2f}\tMin: {:.2f}\tMax: {:.2f}\tRunning average: {:.2f}'.format(i_episode, np.mean(score), np.min(score), np.max(score), np.mean(scores_deque)), end="")
+
         torch.save(agent.actor_local.state_dict(), 'checkpoint_actor.pth')
         torch.save(agent.critic_local.state_dict(), 'checkpoint_critic.pth')
-        if i_episode % print_every == 0:
-            print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)))
 
-    return scores
+        if i_episode % print_every == 0:
+            print('\rEpisode {}\tMean: {:.2f}\tMin: {:.2f}\tMax: {:.2f}'.format(i_episode, np.mean(scores_deque), np.min(scores_deque), np.max(scores_deque)))
+
+        if i_episode > 100 and np.mean(scores_deque) >= target_score:
+            print('\nEnvironment solved in {} episodes!\tAverage score: {:.2f}'.format(i_episode - 100, np.mean(scores_deque)))
+            break
+
+    return scores_plot
 
 
 scores = ddpg()
@@ -85,27 +82,3 @@ plt.plot(np.arange(1, len(scores) + 1), scores)
 plt.ylabel('Score')
 plt.xlabel('Episode #')
 plt.show()
-
-
-# take random actions
-# env_info = env.reset(train_mode=False)[brain_name]     # reset the environment
-# states = env_info.vector_observations                  # get the current state (for each agent)
-# scores = np.zeros(num_agents)                          # initialize the score (for each agent)
-
-# while True:
-#    actions = agent.act(states)
-#    actions = np.random.randn(num_agents, action_size) # select an action (for each agent)
-#    actions = np.clip(actions, -1, 1)                  # all actions between -1 and 1
-#    env_info = env.step(actions)[brain_name]           # send all actions to tne environment
-#    next_states = env_info.vector_observations         # get next state (for each agent)
-#    rewards = env_info.rewards                         # get reward (for each agent)
-#    dones = env_info.local_done                        # see if episode finished
-#    agent.step(states, actions, rewards, next_states, dones)
-#    scores += env_info.rewards                         # update the score (for each agent)
-#    states = next_states                               # roll over states to next time step
-#    if np.any(dones):                                  # exit loop if episode finished
-#        break
-
-# print('Total score (averaged over agents) this episode: {}'.format(np.mean(scores)))
-
-
