@@ -57,16 +57,15 @@ def ddpg(n_episodes=500, max_t=1000, print_every=100, target_score=30):
         scores_deque.append(np.mean(score))
         scores_plot.append(np.mean(score))
 
-        print('\rEpisode {}\tMean: {:.2f}\tMin: {:.2f}\tMax: {:.2f}\tRunning average: {:.2f}'.format(i_episode, np.mean(score), np.min(score), np.max(score), np.mean(scores_deque)), end="")
-
-        torch.save(agent.actor_local.state_dict(), 'checkpoint_actor.pth')
-        torch.save(agent.critic_local.state_dict(), 'checkpoint_critic.pth')
+        print('\rEpisode {}\tMean: {:.2f}\tMin: {:.2f}\tMax: {:.2f}\tRunning Average: {:.2f}'.format(i_episode, np.mean(score), np.min(score), np.max(score), np.mean(scores_deque)), end="")
 
         if i_episode % print_every == 0:
             print('\rEpisode {}\tMean: {:.2f}\tMin: {:.2f}\tMax: {:.2f}'.format(i_episode, np.mean(scores_deque), np.min(scores_deque), np.max(scores_deque)))
 
         if i_episode > 100 and np.mean(scores_deque) >= target_score:
-            print('\nEnvironment solved in {} episodes!\tAverage score: {:.2f}'.format(i_episode - 100, np.mean(scores_deque)))
+            print('\nEnvironment solved in {} episodes!\tAverage Score: {:.2f}'.format(i_episode - 100, np.mean(scores_deque)))
+            torch.save(agent.actor_local.state_dict(), 'checkpoint_actor.pth')
+            torch.save(agent.critic_local.state_dict(), 'checkpoint_critic.pth')
             break
 
     return scores_plot
