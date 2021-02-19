@@ -12,7 +12,7 @@ It is also worth nothing that DDPG uses soft updating, meaning the values are sl
 
 ## Implementation
 
-##### Model architecture for the neural network:
+#### Model architecture for the neural network:
 Actor
 - input: 33, output: 128 (ReLu activation)
 - input: 128, output: 128 (ReLu activation)
@@ -23,7 +23,7 @@ Critic
 - input: 128+4, output: 128 (ReLu activation)
 - input: 128, output: 1 (No activation) 
 
-##### Steps taken to generate the final network:
+#### Steps taken to generate the final network:
 
 - Adapted existing DDPG implementation to add multiple agents experiences to the replay buffer
 - Sampled 10 times from the replay buffer every 20 timesteps
@@ -32,7 +32,7 @@ Critic
 - Tweaked Actor/Critic learning rates to get optimal results
 - Tweaked the Sigma value which controls the volatility of Ornstein-Uhlenbeck noise
 
-##### Hyperparameters used in the final training solution:
+#### Hyperparameters used in the final training solution:
 
 buffer_size = int(1e6)  
 batch_size = 128  
