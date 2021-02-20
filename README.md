@@ -11,23 +11,30 @@ To solve the environment the agents must get an average score of +30 (over 100 c
 - This yields an **average score** for each episode (where the average is over all 20 agents).
 - The environment is considered solved, when the average (over 100 episodes) of those average scores is at least +30. 
 
-## Setup
-1. Clone this repository.  
+## Dependencies
+1. Clone this repository to your local drive.
 
-2. Make sure you have python 3.6 installed and a virtual environment activated, then install the required packages torch, numpy and unityagents. They can be installed using pip:
-    ```
-    python pip install torch 
-    ```
-3. Download the environment from one of the links below and extract in the repository directory:
+2. Download the environment from one of the links below and extract in the repository directory:
     - Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Linux.zip)
     - Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher.app.zip)
     - Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Windows_x86.zip)
     - Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Windows_x86_64.zip)
 
+3. Navigate to the repository directory then create and activate a new environment with Python 3.6:
+    ```
+    python -m venv venv
+    .\venv\Scripts\activate
+    ```  
+
+4. Install the required packages torch, numpy and unityagents. They can be installed using pip:
+    ```
+    pip install torch numpy unityagents
+    ```
+
 
 ## Running the Project
-Browse to the project directory and run `train.py` to begin training. The trained weights are saved to the files `checkpoint_actor.pth` and `checkpoint_critic.pth` once the required score is reached.
-```
-python train.py
-```
-Run `play.py` to watch an episode where smart agents run using the trained data.
+With the environment activated run `train.py` to begin training. 
+
+The trained weights are saved to the files `checkpoint_actor.pth` and `checkpoint_critic.pth` once the required score is reached.
+
+Run `play.py` to watch an episode where smart agents function using the trained data.
