@@ -50,9 +50,9 @@ theta = 0.15
 
 ![results](images/final.png)
 
-Episode 100 Mean: 13.15  
-Episode 151	Mean: 38.63  
-Environment solved in 51 episodes!	Average score: 30.07  
+Episode 100	Mean: 15.62  
+Episode 140	Mean: 38.72  
+Environment solved in 40 episodes!  Average Score: 30.29  
 
 
 ## Ideas for future work
