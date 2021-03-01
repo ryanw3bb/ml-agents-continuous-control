@@ -31,6 +31,8 @@ Critic
 - Reduced the Actor/Critic node size to 128
 - Tweaked Actor/Critic learning rates to get optimal results
 - Tweaked the Sigma value which controls the volatility of Ornstein-Uhlenbeck noise
+- Used standard normal distribution when applying noise instead of random.random() which tends to bias towards 0.6
+- Added Batch Normalisation on Actor/Critic input
 
 #### Hyperparameters used in the final training solution:
 
@@ -50,9 +52,9 @@ theta = 0.15
 
 ![results](images/final.png)
 
-Episode 100	Mean: 15.62  
-Episode 140	Mean: 38.72  
-Environment solved in 40 episodes!  Average Score: 30.29  
+Episode 100	Mean: 22.96	
+Episode 119	Mean: 36.86
+Environment solved in 119 episodes!	Average Score: 30.08
 
 
 ## Ideas for future work
